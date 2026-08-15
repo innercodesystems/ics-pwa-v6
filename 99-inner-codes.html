@@ -2090,10 +2090,25 @@ if (back) back.scrollTop = 0;
       renderFavorites();
     });
 
-    favoritesToggle.addEventListener("click", () => {
-      favoritesPanel.classList.toggle("open");
-      renderFavorites();
-    });
+favoritesToggle.addEventListener("click", () => {
+  const isOpen = favoritesPanel.classList.contains("open");
+
+  if (isOpen) {
+    favoritesPanel.classList.remove("open");
+    favoritesToggle.textContent = "Meine Codes";
+  } else {
+    renderFavorites();
+    favoritesPanel.classList.add("open");
+    favoritesToggle.textContent = "Meine Codes schließen";
+
+    setTimeout(() => {
+      favoritesPanel.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
+    }, 100);
+  }
+});
 
     // Bestehendes Rendern nur ergänzen, nicht ersetzen.
     const originalRenderCodeV15 = renderCode;
