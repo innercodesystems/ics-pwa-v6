@@ -470,7 +470,44 @@ Impuls / Reflexion / Handlung bleiben vorerst vorhandene Prototyptexte.
       * { scroll-behavior: auto !important; }
       .code-card { transition: none; }
     }
-  
+
+/* MOBILE SAFE – kein 3D Flip mehr */
+.card-wrap{
+  perspective:none;
+}
+
+.code-card{
+  transform:none !important;
+  transform-style:flat;
+  transition:none;
+}
+
+.code-card.flipped{
+  transform:none !important;
+}
+
+.face{
+  backface-visibility:visible;
+  -webkit-backface-visibility:visible;
+}
+
+.front{
+  display:grid;
+}
+
+.back{
+  display:none;
+  transform:none !important;
+}
+
+.code-card.flipped .front{
+  display:none;
+}
+
+.code-card.flipped .back{
+  display:block;
+}
+    
     /* V5 mobile flip reliability */
     .code-card .front {
       pointer-events: auto;
