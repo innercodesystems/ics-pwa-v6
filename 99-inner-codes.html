@@ -850,6 +850,7 @@ body.sticky-visible{padding-top:42px}
             <textarea id="takeawayInput" maxlength="500" placeholder="Schreib deinen persönlichen Satz zu diesem Code …"></textarea>
             <div class="takeaway-actions">
               <button class="save-takeaway" id="saveTakeawayBtn" type="button">Für heute speichern</button>
+              <button class="delete-takeaway" id="deleteTakeawayBtn" type="button">Löschen</button>
               <span class="save-state" id="takeawayState" aria-live="polite"></span>
             </div>
           </section>
@@ -2084,6 +2085,7 @@ body.sticky-visible{padding-top:42px}
 const TAKEAWAY_KEY="ics99InnerCodesTakeawaysV1";
 const takeawayInput=document.getElementById("takeawayInput");
 const saveTakeawayBtn=document.getElementById("saveTakeawayBtn");
+const deleteTakeawayBtn=document.getElementById("deleteTakeawayBtn");
 const takeawayState=document.getElementById("takeawayState");
 function localDateKey(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function getTakeaways(){try{return JSON.parse(localStorage.getItem(TAKEAWAY_KEY)||"{}")}catch(e){return {}}}
@@ -2091,6 +2093,14 @@ function takeawayId(index){return localDateKey()+"::"+codes[index].number}
 function loadTakeaway(){if(!takeawayInput)return;const s=getTakeaways()[takeawayId(currentIndex)];takeawayInput.value=s?.text||"";takeawayState.textContent=s?.text?"Heute gespeichert ✓":""}
 function saveTakeaway(){const text=takeawayInput.value.trim(),all=getTakeaways(),id=takeawayId(currentIndex);if(!text){delete all[id];localStorage.setItem(TAKEAWAY_KEY,JSON.stringify(all));takeawayState.textContent="Eintrag entfernt";return}all[id]={codeNumber:codes[currentIndex].number,codeTitle:codes[currentIndex].title,date:localDateKey(),text:text};localStorage.setItem(TAKEAWAY_KEY,JSON.stringify(all));takeawayState.textContent="Heute gespeichert ✓"}
 saveTakeawayBtn?.addEventListener("click",saveTakeaway);
+deleteTakeawayBtn?.addEventListener("click",()=>{
+  const all=getTakeaways();
+  const id=takeawayId(currentIndex);
+  delete all[id];
+  localStorage.setItem(TAKEAWAY_KEY,JSON.stringify(all));
+  takeawayInput.value="";
+  takeawayState.textContent="Eintrag gelöscht";
+});
 const originalRenderCodeErlebnisV2=renderCode;
 renderCode=function(index){originalRenderCodeErlebnisV2(index);currentIndex=index;setTimeout(loadTakeaway,0)};
 loadTakeaway();
