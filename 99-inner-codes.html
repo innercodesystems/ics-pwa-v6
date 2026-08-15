@@ -1886,6 +1886,9 @@ body.sticky-visible{padding-top:42px}
       modeChip.textContent = mode === "daily" ? "Dein Tagescode" : "Freier Code";
       takeaway.value = "";
       document.querySelectorAll("details").forEach(d => d.open = false);
+
+      const back = card.querySelector(".back");
+if (back) back.scrollTop = 0;
     }
 
     function drawCode(forceNew = false) {
